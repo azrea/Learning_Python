@@ -1,0 +1,32 @@
+steps to a tic tac toe game -->
+
+create a base player class
+
+create a human and computer player class that builds off the base class
+human player class {
+    constructor initializes with the letter X or O for each character
+    method to get a move from the player (for the computer it would be random)
+}
+
+create a game class 
+game class {
+    create a 3*3 board
+    method to print the board
+    method to number the printed board
+    method to remember all available moves 
+    method to play the game
+     def play{
+        loop while game has empty squares
+        decide which letter is playing
+        check a winner
+        alternate players
+    }
+    method to check whether game has empty squares
+    method to return the number of empty squares
+    method to actually make a valid move
+    method to check for a winner
+        def winner{
+            check each row, column and diagonal chance to win if none is possible return false
+        }
+   
+}

@@ -40,3 +40,53 @@ class HumanPlayer(Player):
                 print('Invalid square. Try again')
 
         return val
+
+
+class GeniusPlayer(Player):
+    def __init__(self, letter):
+        super().__init__(letter)
+
+    def get_move(self,game):
+        if len(game.available_moves()) == 9: #at the beginning of the game, when it's your turn, choose a random square to play
+            square = random.choice(game.available_moves())
+        else: 
+            square = self.minimax(game,self.letter)['position'] #recursively call the function till the most optimal choice has been selected and then call it from the dictionary returned from the function as position
+        return square
+
+    def minimax(self, state, player):
+        max_player = self.letter #you wanna maximize yurself
+        other_player = 'X' if player is 'O' else 'O' #and minimize the other player
+
+        if state.current_winner() == other_player: #calculate the next player's chance of winning via the minimax function
+            return {'position': None, 'score': 1 * (state.num_empty_squares() + 1) if other_player == max_player 
+            #only maximise if other player is you 
+             else -1 * (state.num_empty_squares() + 1)} #minimax formula
+        elif not state.num_empty_squares(): #no empty squares remaining
+            return {'position': None, 'score': 0} #so return null as there was no moves
+
+            #create your dictionaries
+        if player == max_player:
+            best = {'position': None, 'score': -math.inf} #set score at its lowest value as we wish to maximize
+        else:
+            best = {'position': None, 'score' : math.inf} # and vice versa
+
+        for possible_move in state.available_moves():
+            #make a move 
+            state.make_move(player, possible_move)
+            #recursively call minimax function to simulate a game
+            simulated_score = self.minimax(state, other_player) #call other player to simulate their game too
+            #undo your move
+            state.board[possible_move] = ' '
+            state.current_winner = None
+            simulated_score['position'] = possible_move #update the simulated score position before passing it on as the best method possible
+            #upgrade your dictionaries
+            if player == max_player: #if this is the player we are trying to maximize 
+                if simulated_score['score'] > best['score']: #then we have to make sure we have the best score for them
+                    best = simulated_score #once we are sure, we then replace the current best score with the new best score
+                elif simulated_score < best['score']: #and vice versa for the opponent
+                    best = simulated_score
+        return best #return the best score and position to play
+
+
+           
+

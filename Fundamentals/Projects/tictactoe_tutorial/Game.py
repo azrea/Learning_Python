@@ -83,5 +83,5 @@ class TicTacToe:
                     return letter
             #after the move we need to alternate players
             letter = 'O' if letter == 'X' else 'X' # switches player: basically the same as a if else statement
-            time.sleep(1.5) #adds a tiny pause
+            #time.sleep(1.5) #adds a tiny pause
         print("it's a tie.") #working on the assumption that for it to come out of the loop and fail the if at the top there was no winner and yet the game still ended

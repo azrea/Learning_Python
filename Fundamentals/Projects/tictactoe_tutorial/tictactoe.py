@@ -3,9 +3,9 @@ from Game import TicTacToe
 
 game = TicTacToe()
 
-x_player = GeniusPlayer('X')
+x_player = HumanPlayer('X')
 
-o_player = HumanPlayer('O')
+o_player = GeniusPlayer('O')
 
 
 game.play(game, x_player, o_player)

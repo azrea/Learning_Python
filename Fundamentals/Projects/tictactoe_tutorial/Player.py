@@ -7,19 +7,6 @@ class Player:
         self.letter = letter
 #self refers to the current instance of the class
 
-
-
-class ComputerPlayer(Player):
-#inheritance from the Player class
-    def __init__(self, letter):
-        super().__init__(letter)
-#super allows for multiple inheritances from different superclasses
-
-    def get_move(self, game): #computer picks a random move
-        square = random.choice(game.available_moves()) #from the games available moves
-        return square
-
-
 class HumanPlayer(Player):
     def __init__(self,letter):
         super().__init__(letter)
@@ -42,6 +29,17 @@ class HumanPlayer(Player):
         return val
 
 
+class ComputerPlayer(Player):
+#inheritance from the Player class
+    def __init__(self, letter):
+        super().__init__(letter)
+#super allows for multiple inheritances from different superclasses
+
+    def get_move(self, game): #computer picks a random move
+        square = random.choice(game.available_moves()) #from the games available moves
+        return square
+
+
 class GeniusPlayer(Player):
     def __init__(self, letter):
         super().__init__(letter)
@@ -55,13 +53,11 @@ class GeniusPlayer(Player):
 
     def minimax(self, state, player):
         max_player = self.letter #you wanna maximize yurself
-        other_player = 'X' if player is 'O' else 'O' #and minimize the other player
+        other_player = 'O' if player == 'X' else 'X' #and minimize the other player
 
-        if state.current_winner() == other_player: #calculate the next player's chance of winning via the minimax function
-            return {'position': None, 'score': 1 * (state.num_empty_squares() + 1) if other_player == max_player 
-            #only maximise if other player is you 
-             else -1 * (state.num_empty_squares() + 1)} #minimax formula
-        elif not state.num_empty_squares(): #no empty squares remaining
+        if state.current_winner == other_player: #calculate the next player's chance of winning via the minimax function
+            return {'position': None, 'score': 1 * (state.num_empty_square() + 1) if other_player == max_player else -1 * (state.num_empty_square() + 1)} #only maximise if other player is you
+        elif not state.empty_squares(): #no empty squares remaining
             return {'position': None, 'score': 0} #so return null as there was no moves
 
             #create your dictionaries
@@ -72,7 +68,7 @@ class GeniusPlayer(Player):
 
         for possible_move in state.available_moves():
             #make a move 
-            state.make_move(player, possible_move)
+            state.make_move(possible_move, player)
             #recursively call minimax function to simulate a game
             simulated_score = self.minimax(state, other_player) #call other player to simulate their game too
             #undo your move
@@ -83,7 +79,7 @@ class GeniusPlayer(Player):
             if player == max_player: #if this is the player we are trying to maximize 
                 if simulated_score['score'] > best['score']: #then we have to make sure we have the best score for them
                     best = simulated_score #once we are sure, we then replace the current best score with the new best score
-                elif simulated_score < best['score']: #and vice versa for the opponent
+                elif simulated_score['score'] < best['score']: #and vice versa for the opponent
                     best = simulated_score
         return best #return the best score and position to play
 

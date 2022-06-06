@@ -1,0 +1,11 @@
+#first we break the game into steps 
+
+#Step 1: Create the board
+#Step 2: Plant the bombs 
+#Step 3: Show the board to the player and get a location to dig 
+#Step 4a: If the location has a bomb then show game over message and end the game
+# Step 4b: If the location doesn't have a bomb then dig recursively till all currently dug locations are next to a bomb
+#Step 5: repeat steps 3 and 4b till there are no more locations to dig
+
+#for the board we create a class that will create a new board and plant the bombs
+

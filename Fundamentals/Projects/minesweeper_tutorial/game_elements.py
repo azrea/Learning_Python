@@ -33,11 +33,11 @@ class Board:
     def get_num_neighbouring_bombs(self,row,col):
         num_of_neighbouring_bombs = 0
 
-        for r in range(max(0,row - 1), min(self.board_size - 1,(row + 1)) + 1):
-            for c in range(max(0,col - 1), min(self.board_size - 1,(col + 1))+1):
-                if r == row and c == col:
+        for r in range(max(0,row - 1), min(self.board_size - 1,(row + 1)) + 1): #max and min is used to ensure that our values don't go out of bounds
+            for c in range(max(0,col - 1), min(self.board_size - 1,(col + 1))+1): #cycle through the entire 3x3 array around our square
+                if r == row and c == col: #we dont want to count our own square 
                     continue
-                if self.board[r][c] == '*':
+                if self.board[r][c] == '*': 
                     num_of_neighbouring_bombs += 1
         return num_of_neighbouring_bombs
 
@@ -47,15 +47,15 @@ class Board:
         self.dug.add((row,col))
 
         if self.board[row][col] == '*':
-            return False
-        elif self.board[row][col] > 0:
+            return False # to set up loss condition
+        elif self.board[row][col] > 0: #once there is a neighbouring bomb stop recursion
             return True
 
         for r in range(max(0,row -1),min(self.board_size - 1,(row + 1)) + 1):
             for c in range(max(0,col - 1),min(self.board_size - 1,(col + 1)) + 1):
                 if (r,c) in self.dug:
                     continue
-                self.dig(r,c)
+                self.dig(r,c) #recursively digging till there is a neighbouring bomb
 
 
         return True
